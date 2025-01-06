@@ -14,5 +14,6 @@ app.get("/books", (req, res) => {
   res.json({ mssg: "Welcome to the API" });
 });
 
-//continue with #5 @ 6:17
-// connect to atlas
+//continue with #5 @ 4:17
+// ~ mongosh gives an error: MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017
+// keep working on that
