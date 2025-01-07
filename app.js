@@ -1,19 +1,51 @@
+const { MongoClient } = require("mongodb");
 const express = require("express");
 
-// init app & middleware
+async function main() {
+  const uri =
+    "mongodb+srv://policonstructkiev:qZPtJZmTTOHNs2i1@mongotestcluster.kcikq.mongodb.net/?retryWrites=true&w=majority&appName=MongoTestCluster";
+  const client = new MongoClient(uri);
 
-const app = express();
+  try {
+    await client.connect();
 
-app.listen(3000, () => {
-  console.log("app is listening on port 3000");
-});
+    await listDatabases(client);
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+}
 
-//routes
+main().catch(console.error);
 
-app.get("/books", (req, res) => {
-  res.json({ mssg: "Welcome to the API" });
-});
+async function listDatabases(client) {
+  const databasesList = await client.db().admin().listDatabases();
 
-//continue with #5 @ 4:17
+  console.log("Databases:");
+  databasesList.databases.forEach((db) => {
+    console.log(`- ${db.name}`);
+  });
+}
+
+// MongoDB & Node.js: Connecting & CRUD Operations (Part 1 of 4) continue @ 12:10
+
+//============================ Previous project with express. Continue when finish with MongoDB set up.
+
+// // init app & middleware
+
+// const app = express();
+
+// app.listen(3000, () => {
+//   console.log("app is listening on port 3000");
+// });
+
+// //routes
+
+// app.get("/books", (req, res) => {
+//   res.json({ mssg: "Welcome to the API" });
+// });
+
+//continue with #7 @ 0:00
 // ~ mongosh gives an error: MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017
 // keep working on that
