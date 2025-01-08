@@ -16,53 +16,58 @@ async function main() {
     //   bedrooms: 1,
     //   bathrooms: 1,
     // });
-    //===================================
+    // ===================================
 
-    //===================== InsertMany()
+    // ===================== InsertMany()
 
-    await createMultipleListings(client, [
-      {
-        name: "Cozy Mountain Cabin",
-        summary: "Rustic retreat with stunning views of the Rockies",
-        bedrooms: 2,
-        bathrooms: 1,
-        beds: 3,
-        last_review: new Date(),
-      },
-      {
-        name: "Beachfront Paradise",
-        summary: "Modern condo steps away from pristine white sand beaches",
-        bedrooms: 3,
-        bathrooms: 2,
-        beds: 4,
-        last_review: new Date(),
-      },
-      {
-        name: "Urban Loft Experience",
-        summary: "Stylish downtown loft in the heart of the city",
-        bedrooms: 1,
-        bathrooms: 1,
-        beds: 2,
-        last_review: new Date(),
-      },
-      {
-        name: "Countryside Villa",
-        summary: "Spacious villa surrounded by vineyards and olive groves",
-        bedrooms: 4,
-        bathrooms: 3,
-        beds: 6,
-        last_review: new Date(),
-      },
-      {
-        name: "Treehouse Adventure",
-        summary: "Unique treehouse experience in a lush forest setting",
-        bedrooms: 1,
-        bathrooms: 1,
-        beds: 1,
-        last_review: new Date(),
-      },
-    ]);
+    // await createMultipleListings(client, [
+    //   {
+    //     name: "Cozy Mountain Cabin",
+    //     summary: "Rustic retreat with stunning views of the Rockies",
+    //     bedrooms: 2,
+    //     bathrooms: 1,
+    //     beds: 3,
+    //     last_review: new Date(),
+    //   },
+    //   {
+    //     name: "Beachfront Paradise",
+    //     summary: "Modern condo steps away from pristine white sand beaches",
+    //     bedrooms: 3,
+    //     bathrooms: 2,
+    //     beds: 4,
+    //     last_review: new Date(),
+    //   },
+    //   {
+    //     name: "Urban Loft Experience",
+    //     summary: "Stylish downtown loft in the heart of the city",
+    //     bedrooms: 1,
+    //     bathrooms: 1,
+    //     beds: 2,
+    //     last_review: new Date(),
+    //   },
+    //   {
+    //     name: "Countryside Villa",
+    //     summary: "Spacious villa surrounded by vineyards and olive groves",
+    //     bedrooms: 4,
+    //     bathrooms: 3,
+    //     beds: 6,
+    //     last_review: new Date(),
+    //   },
+    //   {
+    //     name: "Treehouse Adventure",
+    //     summary: "Unique treehouse experience in a lush forest setting",
+    //     bedrooms: 1,
+    //     bathrooms: 1,
+    //     beds: 1,
+    //     last_review: new Date(),
+    //   },
+    // ]);
+
     //=========================================
+
+    // =========================== FindOne()
+
+    findOneListingByName(client, { name: "Treehouse Adventure" });
   } catch (e) {
     console.error(e);
   } finally {
@@ -72,35 +77,50 @@ async function main() {
 
 main().catch(console.error);
 
-async function createMultipleListings(client, newListings) {
+async function findOneListingByName(client, nameOfListing) {
   const result = await client
     .db("sample_airbnb")
     .collection("ListingsAndReviews")
-    .insertMany(newListings);
+    .findOne(nameOfListing);
 
-  console.log(
-    `${result.insertedCount} new listings created with the following id(s):`
-  );
-  console.log(result.insertedIds);
-}
+  if (result) {
+    console.log(
+      `Found a listing in the collection with the name ${nameOfListing}`
+    );
+  } else {
+    console.log(`No listings found with the name ${nameOfListing}`);
+  }
 
-async function createListing(client, newListing) {
-  const result = await client
-    .db("sample_airbnb")
-    .collection("listingsAndReviews")
-    .insertOne(newListing);
-  console.log(
-    `New listing created with the following id: ${result.insertedId}`
-  );
-}
+  async function createMultipleListings(client, newListings) {
+    const result = await client
+      .db("sample_airbnb")
+      .collection("ListingsAndReviews")
+      .insertMany(newListings);
 
-async function listDatabases(client) {
-  const databasesList = await client.db().admin().listDatabases();
+    console.log(
+      `${result.insertedCount} new listings created with the following id(s):`
+    );
+    console.log(result.insertedIds);
+  }
 
-  console.log("Databases:");
-  databasesList.databases.forEach((db) => {
-    console.log(`- ${db.name}`);
-  });
+  async function createListing(client, newListing) {
+    const result = await client
+      .db("sample_airbnb")
+      .collection("listingsAndReviews")
+      .insertOne(newListing);
+    console.log(
+      `New listing created with the following id: ${result.insertedId}`
+    );
+  }
+
+  async function listDatabases(client) {
+    const databasesList = await client.db().admin().listDatabases();
+
+    console.log("Databases:");
+    databasesList.databases.forEach((db) => {
+      console.log(`- ${db.name}`);
+    });
+  }
 }
 
 // MongoDB & Node.js: Connecting & CRUD Operations (Part 1 of 4) continue @ 12:10
@@ -123,4 +143,4 @@ async function listDatabases(client) {
 
 //continue with #7 @ 0:00
 // ~ mongosh gives an error: MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017
-// keep working on that
+// keep working on that}
