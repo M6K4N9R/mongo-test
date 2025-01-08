@@ -9,12 +9,60 @@ async function main() {
   try {
     await client.connect();
 
-    await createListing(client, {
-      name: "Lovely Loft",
-      summary: "A Charming Loft in Paris",
-      bedrooms: 1,
-      bathrooms: 1,
-    });
+    // ====================== InsertOne()
+    // await createListing(client, {
+    //   name: "Lovely Loft",
+    //   summary: "A Charming Loft in Paris",
+    //   bedrooms: 1,
+    //   bathrooms: 1,
+    // });
+    //===================================
+
+    //===================== InsertMany()
+
+    await createMultipleListings(client, [
+      {
+        name: "Cozy Mountain Cabin",
+        summary: "Rustic retreat with stunning views of the Rockies",
+        bedrooms: 2,
+        bathrooms: 1,
+        beds: 3,
+        last_review: new Date(),
+      },
+      {
+        name: "Beachfront Paradise",
+        summary: "Modern condo steps away from pristine white sand beaches",
+        bedrooms: 3,
+        bathrooms: 2,
+        beds: 4,
+        last_review: new Date(),
+      },
+      {
+        name: "Urban Loft Experience",
+        summary: "Stylish downtown loft in the heart of the city",
+        bedrooms: 1,
+        bathrooms: 1,
+        beds: 2,
+        last_review: new Date(),
+      },
+      {
+        name: "Countryside Villa",
+        summary: "Spacious villa surrounded by vineyards and olive groves",
+        bedrooms: 4,
+        bathrooms: 3,
+        beds: 6,
+        last_review: new Date(),
+      },
+      {
+        name: "Treehouse Adventure",
+        summary: "Unique treehouse experience in a lush forest setting",
+        bedrooms: 1,
+        bathrooms: 1,
+        beds: 1,
+        last_review: new Date(),
+      },
+    ]);
+    //=========================================
   } catch (e) {
     console.error(e);
   } finally {
@@ -23,6 +71,18 @@ async function main() {
 }
 
 main().catch(console.error);
+
+async function createMultipleListings(client, newListings) {
+  const result = await client
+    .db("sample_airbnb")
+    .collection("ListingsAndReviews")
+    .insertMany(newListings);
+
+  console.log(
+    `${result.insertedCount} new listings created with the following id(s):`
+  );
+  console.log(result.insertedIds);
+}
 
 async function createListing(client, newListing) {
   const result = await client
