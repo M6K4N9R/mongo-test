@@ -141,6 +141,6 @@ async function findOneListingByName(client, nameOfListing) {
 //   res.json({ mssg: "Welcome to the API" });
 // });
 
-//continue with #7 @ 0:00
+//continue with #9 @ 0:00
 // ~ mongosh gives an error: MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017
 // keep working on that}
